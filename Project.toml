@@ -1,0 +1,7 @@
+name = "SciTypes"
+uuid = "6cb2f572-2d2b-4ba6-bdb3-e710fa044d6c"
+authors = ["Elias Carvalho <eliascarvdev@gmail.com> and contributors"]
+version = "1.0.0-DEV"
+
+[compat]
+julia = "1.6"
