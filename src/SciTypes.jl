@@ -1,5 +1,8 @@
 module SciTypes
 
-# Write your package code here.
+export scitype, elscitype
+
+include("interface.jl")
+include("scitypes.jl")
 
 end
