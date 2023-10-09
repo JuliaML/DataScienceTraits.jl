@@ -1,16 +1,20 @@
-abstract type Infinity <: ScientificType end
+abstract type Continuous <: SciType end
 
-struct Count <: Infinity end
+abstract type Categorical <: SciType end
 
-scitype(::Type{<:Integer}) = Count
-scitype(::Type{<:Rational}) = Count
+#-----------------
+# IMPLEMENTATIONS
+#-----------------
 
-struct Continuous <: Infinity end
+scitype(::Type{<:Number}) = Continuous
 
-scitype(::Type{<:Real}) = Continuous
-scitype(::Type{<:Complex{<:Real}}) = Continuous
+scitype(::Type{<:Symbol}) = Categorical
+scitype(::Type{<:Integer}) = Categorical
+scitype(::Type{<:AbstractChar}) = Categorical
+scitype(::Type{<:AbstractString}) = Categorical
 
-struct Text <: ScientificType end
+#------------
+# CONVERSION
+#------------
 
-scitype(::Type{<:AbstractChar}) = Text
-scitype(::Type{<:AbstractString}) = Text
+sciconvert(::Type{Continuous}, x::Integer) = float(x)
