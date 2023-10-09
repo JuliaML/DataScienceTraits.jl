@@ -102,11 +102,11 @@ sciconvert(::Type{<:SciType}, ::Missing) = missing
 #-----------
 
 """
-    coerce(itr, S::Type{<:SciType})
+    coerce(S::Type{<:SciType}, itr)
 
-Convert the scientific type of iterable `itr` to `S`.
+Convert the scientific type of elements of the iterable `itr` to `S`.
 """
-coerce(itr, ::Type{S}) where {S<:SciType} = map(x -> sciconvert(S, x), itr)
+coerce(::Type{S}, itr) where {S<:SciType} = map(x -> sciconvert(S, x), itr)
 
 #---------
 # EXPORTS
