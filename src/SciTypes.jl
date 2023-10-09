@@ -4,37 +4,62 @@
 
 module SciTypes
 
-#--------
-# TRAITS
-#--------
-
 """
-    ScientificType
+    SciType
 
-TODO
+Parent type of all scientific types.
 """
 abstract type SciType end
+
+"""
+    Continuous
+
+Scientific type of continuous variables.
+"""
+abstract type Continuous <: SciType end
+
+"""
+    Categorical
+
+Scientific type of categorical (a.k.a. discrete) variables.
+"""
+abstract type Categorical <: SciType end
+
+"""
+    Compositional
+
+Scientific type of compositional data (See CoDa.jl).
+"""
+abstract type Compositional <: SciType end
+
+"""
+    Unknown
+
+Scientific type used as a fallback in the `scitype` trait function.
+"""
+abstract type Unknown <: SciType end
 
 """
     scitype(x) -> SciType
     scitype(T::Type) -> SciType
 
-TODO
+Return the scientific type of object `x` of type `T`.
 """
 function scitype end
 
 """
     elscitype(itr) -> SciType
-    elscitype(T::Type) -> SciType
+    elscitype(I::Type) -> SciType
 
-TODO
+Return the scientific type of the elements of iterator `itr`
+of type `I`.
 """
 function elscitype end
 
 """
     sciconvert(S::Type{<:SciType}, x)
 
-TODO
+Convert the scientific type of object `x` to `S`.
 """
 function sciconvert end
 
@@ -55,45 +80,19 @@ function sciconvert(::Type{S}, x::T) where {S<:SciType,T}
   x
 end
 
-#----------
-# SCITYPES
-#----------
-
-abstract type Unknown <: SciType end
-
-abstract type Continuous <: SciType end
-
-abstract type Categorical <: SciType end
-
-abstract type Compositional <: SciType end
-
 #-----------------
 # IMPLEMENTATIONS
 #-----------------
 
 scitype(::Type) = Unknown
-scitype(::Type{Union{}}) = Unknown
-
 scitype(::Type{<:Number}) = Continuous
-
 scitype(::Type{<:Symbol}) = Categorical
 scitype(::Type{<:Integer}) = Categorical
 scitype(::Type{<:AbstractChar}) = Categorical
 scitype(::Type{<:AbstractString}) = Categorical
-
-#------------
-# CONVERSION
-#------------
-
-sciconvert(::Type{Continuous}, x::Integer) = float(x)
-
-#----------------
-# MISSING VALUES
-#----------------
-
-scitype(::Type{Missing}) = Unknown
 scitype(::Type{Union{T,Missing}}) where {T} = scitype(T)
 
+sciconvert(::Type{Continuous}, x::Integer) = float(x)
 sciconvert(::Type{<:SciType}, ::Missing) = missing
 
 #-----------
@@ -103,7 +102,7 @@ sciconvert(::Type{<:SciType}, ::Missing) = missing
 """
     coerce(itr, S::Type{<:SciType})
 
-TODO
+Convert the scientific type of iterable `itr` to `S`.
 """
 coerce(itr, ::Type{S}) where {S<:SciType} = map(x -> sciconvert(S, x), itr)
 
