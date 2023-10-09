@@ -61,18 +61,22 @@ using Test
     # fallback: Continuous
     for x in (1.0f0, 1.0, 1.0f0 + 2im, 1.0 + 2im)
       @test SciTypes.sciconvert(SciTypes.Continuous, x) === x
+      @test scitype(SciTypes.sciconvert(SciTypes.Continuous, x)) <: SciTypes.Continuous
     end
 
     # fallback: Categorical
     for x in (:a, 1, 'a', "a")
       @test SciTypes.sciconvert(SciTypes.Categorical, x) === x
+      @test scitype(SciTypes.sciconvert(SciTypes.Categorical, x)) <: SciTypes.Categorical
     end
 
     # fallback: Unknown
     @test SciTypes.sciconvert(SciTypes.Unknown, nothing) === nothing
+    @test scitype(SciTypes.sciconvert(SciTypes.Unknown, nothing)) <: SciTypes.Unknown
 
     # interger to Continuous
     @test SciTypes.sciconvert(SciTypes.Continuous, 1) == 1.0
+    @test scitype(SciTypes.sciconvert(SciTypes.Continuous, 1)) <: SciTypes.Continuous
 
     # throws
     @test_throws ArgumentError SciTypes.sciconvert(SciTypes.Continuous, nothing)
