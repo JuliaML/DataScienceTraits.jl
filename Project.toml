@@ -3,5 +3,12 @@ uuid = "6cb2f572-2d2b-4ba6-bdb3-e710fa044d6c"
 authors = ["Elias Carvalho <eliascarvdev@gmail.com> and contributors"]
 version = "0.1.0"
 
+[weakdeps]
+CoDa = "5900dafe-f573-5c72-b367-76665857777b"
+
+[extensions]
+SciTypesCoDaExt = "CoDa"
+
 [compat]
-julia = "1.6"
+CoDa = "1.0"
+julia = "1.9"

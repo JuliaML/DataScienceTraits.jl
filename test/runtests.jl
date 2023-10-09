@@ -1,4 +1,5 @@
 using SciTypes
+using CoDa
 using Test
 
 @testset "SciTypes.jl" begin
@@ -83,10 +84,10 @@ using Test
   end
 
   @testset "coerce" begin
-    @test coerce([1, 2, 3], SciTypes.Continuous) == [1.0, 2.0, 3.0]
-    @test elscitype(coerce([1, 2, 3], SciTypes.Continuous)) <: SciTypes.Continuous
-    @test coerce((1, 2, 3), SciTypes.Continuous) == (1.0, 2.0, 3.0)
-    @test elscitype(coerce((1, 2, 3), SciTypes.Continuous)) <: SciTypes.Continuous
+    @test coerce(SciTypes.Continuous, [1, 2, 3]) == [1.0, 2.0, 3.0]
+    @test elscitype(coerce(SciTypes.Continuous, [1, 2, 3])) <: SciTypes.Continuous
+    @test coerce(SciTypes.Continuous, (1, 2, 3)) == (1.0, 2.0, 3.0)
+    @test elscitype(coerce(SciTypes.Continuous, (1, 2, 3))) <: SciTypes.Continuous
   end
 
   @testset "missing values" begin
@@ -96,6 +97,16 @@ using Test
     @test elscitype(fill(missing, 3)) <: SciTypes.Unknown
     @test elscitype([1.0, missing, 3.0]) <: SciTypes.Continuous
     @test elscitype([1, missing, 3]) <: SciTypes.Categorical
-    @test isequal(coerce([1, missing, 3], SciTypes.Continuous), [1.0, missing, 3.0])
+    @test isequal(coerce(SciTypes.Continuous, [1, missing, 3]), [1.0, missing, 3.0])
+  end
+
+  @testset "CoDa" begin
+    c1 = Composition(a=0.2, b=0.8)
+    c2 = Composition(a=0.5, b=0.5)
+    @test scitype(Composition{2, (:a, :b)}) <: SciTypes.Compositional
+    @test scitype(c1) <: SciTypes.Compositional
+    @test elscitype(Vector{Composition{2, (:a, :b)}}) <: SciTypes.Compositional
+    @test elscitype([c1, c2]) <: SciTypes.Compositional
+    @test elscitype([c1, missing, c2]) <: SciTypes.Compositional
   end
 end
