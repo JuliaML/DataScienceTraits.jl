@@ -35,6 +35,7 @@ abstract type SciType end
 struct Unknown <: SciType end
 
 scitype(::Type) = Unknown
+scitype(::Type{Union{}}) = Unknown
 
 #-----------
 # FALLBACKS
