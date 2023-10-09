@@ -60,16 +60,16 @@ using Test
   @testset "sciconvert" begin
     # fallback: Continuous
     for x in (1.0f0, 1.0, 1.0f0 + 2im, 1.0 + 2im)
-      @test SciTypes.sciconvert(SciTypes.Continuous, x) == x
+      @test SciTypes.sciconvert(SciTypes.Continuous, x) === x
     end
 
     # fallback: Categorical
     for x in (:a, 1, 'a', "a")
-      @test SciTypes.sciconvert(SciTypes.Categorical, x) == x
+      @test SciTypes.sciconvert(SciTypes.Categorical, x) === x
     end
 
     # fallback: Unknown
-    @test isnothing(SciTypes.sciconvert(SciTypes.Unknown, nothing))
+    @test SciTypes.sciconvert(SciTypes.Unknown, nothing) === nothing
 
     # interger to Continuous
     @test SciTypes.sciconvert(SciTypes.Continuous, 1) == 1.0
