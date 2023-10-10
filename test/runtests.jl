@@ -1,4 +1,5 @@
 using SciTypes
+using CategoricalArrays
 import DynamicQuantities
 import Unitful
 using CoDa
@@ -92,6 +93,16 @@ using Test
     @test elscitype(coerce(SciTypes.Continuous, (1, 2, 3))) <: SciTypes.Continuous
   end
 
+  @testset "isordered" begin
+    @test !SciTypes.isordered([1, 2, 3])
+    @test !SciTypes.isordered((:a, :b, :c))
+    @test !SciTypes.isordered(['a', 'b', 'c'])
+    @test !SciTypes.isordered(("a", "b", "c"))
+
+    # throws
+    @test_throws ArgumentError SciTypes.isordered([1.0, 2.0, 3.0])
+  end
+
   @testset "missing values" begin
     @test scitype(Missing) <: SciTypes.Unknown
     @test scitype(Union{Float64,Missing}) <: SciTypes.Continuous
@@ -105,9 +116,9 @@ using Test
   @testset "CoDa" begin
     c1 = Composition(a=0.2, b=0.8)
     c2 = Composition(a=0.5, b=0.5)
-    @test scitype(Composition{2, (:a, :b)}) <: SciTypes.Compositional
+    @test scitype(Composition{2,(:a, :b)}) <: SciTypes.Compositional
     @test scitype(c1) <: SciTypes.Compositional
-    @test elscitype(Vector{Composition{2, (:a, :b)}}) <: SciTypes.Compositional
+    @test elscitype(Vector{Composition{2,(:a, :b)}}) <: SciTypes.Compositional
     @test elscitype([c1, c2]) <: SciTypes.Compositional
     @test elscitype([c1, missing, c2]) <: SciTypes.Compositional
   end
@@ -159,5 +170,20 @@ using Test
     @test elscitype(coerce(SciTypes.Continuous, [1, 2, 3] .* ui)) <: SciTypes.Continuous
     @test isequal(coerce(SciTypes.Continuous, [1 * ui, missing, 3 * ui]), [1.0 * uf, missing, 3.0 * uf])
     @test elscitype(coerce(SciTypes.Continuous, [1 * ui, missing, 3 * ui])) <: SciTypes.Continuous
+  end
+
+  @testset "CategoricalArrays" begin
+    carr = categorical([1, 2, 3])
+    cval = first(carr)
+    CV = typeof(cval)
+    CA = typeof(carr)
+    @test scitype(CV) <: SciTypes.Categorical
+    @test scitype(cval) <: SciTypes.Categorical
+    @test elscitype(CA) <: SciTypes.Categorical
+    @test elscitype(carr) <: SciTypes.Categorical
+    @test elscitype(categorical([1, missing, 3])) <: SciTypes.Categorical
+    @test !SciTypes.isordered(carr)
+    carr = categorical([1, 3, 2], ordered=true)
+    @test SciTypes.isordered(carr)
   end
 end
