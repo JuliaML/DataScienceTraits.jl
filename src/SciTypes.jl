@@ -124,6 +124,6 @@ end
 # EXPORTS
 #---------
 
-export scitype, elscitype, coerce
+export scitype, elscitype
 
 end
