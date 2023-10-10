@@ -1,5 +1,6 @@
 using SciTypes
-using Unitful
+import DynamicQuantities
+import Unitful
 using CoDa
 using Test
 
@@ -112,8 +113,9 @@ using Test
   end
 
   @testset "Unitful" begin
-    q1 = 1u"m"
-    q2 = 1.0u"m"
+    u = Unitful.u"m"
+    q1 = 1 * u
+    q2 = 1.0 * u
     Q1 = typeof(q1)
     Q2 = typeof(q2)
     @test scitype(Q1) <: SciTypes.Categorical
@@ -122,15 +124,40 @@ using Test
     @test scitype(q2) <: SciTypes.Continuous
     @test elscitype(Vector{Q1}) <: SciTypes.Categorical
     @test elscitype(Vector{Q2}) <: SciTypes.Continuous
-    @test elscitype([1, 2, 3]u"m") <: SciTypes.Categorical
-    @test elscitype([1.0, 2.0, 3.0]u"m") <: SciTypes.Continuous
-    @test elscitype([1, missing, 3]u"m") <: SciTypes.Categorical
-    @test elscitype([1.0, missing, 3.0]u"m") <: SciTypes.Continuous
-    @test SciTypes.sciconvert(SciTypes.Continuous, q1) == 1.0u"m"
+    @test elscitype([1, 2, 3] * u) <: SciTypes.Categorical
+    @test elscitype([1.0, 2.0, 3.0] * u) <: SciTypes.Continuous
+    @test elscitype([1, missing, 3] * u) <: SciTypes.Categorical
+    @test elscitype([1.0, missing, 3.0] * u) <: SciTypes.Continuous
+    @test SciTypes.sciconvert(SciTypes.Continuous, q1) == 1.0 * u
     @test scitype(SciTypes.sciconvert(SciTypes.Continuous, q1)) <: SciTypes.Continuous
-    @test coerce(SciTypes.Continuous, [1, 2, 3]u"m") == [1.0, 2.0, 3.0]u"m"
-    @test elscitype(coerce(SciTypes.Continuous, [1, 2, 3]u"m")) <: SciTypes.Continuous
-    @test isequal(coerce(SciTypes.Continuous, [1, missing, 3]u"m"), [1.0, missing, 3.0]u"m")
-    @test elscitype(coerce(SciTypes.Continuous, [1, missing, 3]u"m")) <: SciTypes.Continuous
+    @test coerce(SciTypes.Continuous, [1, 2, 3] * u) == [1.0, 2.0, 3.0] * u
+    @test elscitype(coerce(SciTypes.Continuous, [1, 2, 3] * u)) <: SciTypes.Continuous
+    @test isequal(coerce(SciTypes.Continuous, [1, missing, 3] * u), [1.0, missing, 3.0] * u)
+    @test elscitype(coerce(SciTypes.Continuous, [1, missing, 3] * u)) <: SciTypes.Continuous
+  end
+
+  @testset "DynamicQuantities" begin
+    uf = DynamicQuantities.u"m"
+    ui = DynamicQuantities.Quantity{Int}(uf)
+    q1 = 1 * ui
+    q2 = 1.0 * uf
+    Q1 = typeof(q1)
+    Q2 = typeof(q2)
+    @test scitype(Q1) <: SciTypes.Categorical
+    @test scitype(Q2) <: SciTypes.Continuous
+    @test scitype(q1) <: SciTypes.Categorical
+    @test scitype(q2) <: SciTypes.Continuous
+    @test elscitype(Vector{Q1}) <: SciTypes.Categorical
+    @test elscitype(Vector{Q2}) <: SciTypes.Continuous
+    @test elscitype([1, 2, 3] .* ui) <: SciTypes.Categorical
+    @test elscitype([1.0, 2.0, 3.0] .* uf) <: SciTypes.Continuous
+    @test elscitype([1 * ui, missing, 3 * ui]) <: SciTypes.Categorical
+    @test elscitype([1.0 * uf, missing, 3.0 * uf]) <: SciTypes.Continuous
+    @test SciTypes.sciconvert(SciTypes.Continuous, q1) == 1.0 * uf
+    @test scitype(SciTypes.sciconvert(SciTypes.Continuous, q1)) <: SciTypes.Continuous
+    @test coerce(SciTypes.Continuous, [1, 2, 3] .* ui) == [1.0, 2.0, 3.0] .* uf
+    @test elscitype(coerce(SciTypes.Continuous, [1, 2, 3] .* ui)) <: SciTypes.Continuous
+    @test isequal(coerce(SciTypes.Continuous, [1 * ui, missing, 3 * ui]), [1.0 * uf, missing, 3.0 * uf])
+    @test elscitype(coerce(SciTypes.Continuous, [1 * ui, missing, 3 * ui])) <: SciTypes.Continuous
   end
 end
