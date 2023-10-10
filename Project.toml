@@ -5,10 +5,13 @@ version = "0.1.0"
 
 [weakdeps]
 CoDa = "5900dafe-f573-5c72-b367-76665857777b"
+Unitful = "1986cc42-f94f-5a68-af5c-568840ba703d"
 
 [extensions]
 SciTypesCoDaExt = "CoDa"
+SciTypesUnitfulExt = "Unitful"
 
 [compat]
 CoDa = "1.0"
+Unitful = "1.17"
 julia = "1.9"
