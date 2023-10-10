@@ -88,14 +88,14 @@ scitype(::Type) = Unknown
 scitype(::Type{Union{}}) = Unknown
 scitype(::Type{Missing}) = Unknown
 scitype(::Type{<:Number}) = Continuous
-scitype(::Type{<:Symbol}) = Categorical
+scitype(::Type{Symbol}) = Categorical
 scitype(::Type{<:Integer}) = Categorical
 scitype(::Type{<:AbstractChar}) = Categorical
 scitype(::Type{<:AbstractString}) = Categorical
 scitype(::Type{Union{T,Missing}}) where {T} = scitype(T)
 
-sciconvert(::Type{Continuous}, x::Integer) = float(x)
 sciconvert(::Type{<:SciType}, ::Missing) = missing
+sciconvert(::Type{Continuous}, x::Integer) = float(x)
 
 #-----------
 # UTILITIES
