@@ -127,9 +127,6 @@ using Test
     @test elscitype(fill(missing, 3)) <: SciTypes.Unknown
     @test elscitype([1.0, missing, 3.0]) <: SciTypes.Continuous
     @test elscitype([1, missing, 3]) <: SciTypes.Categorical
-    for S in (SciTypes.Continuous, SciTypes.Categorical, SciTypes.Compositional, SciTypes.Unknown)
-      @test ismissing(SciTypes.sciconvert(S, missing))
-    end
     @test isequal(SciTypes.coerce(SciTypes.Continuous, [1, missing, 3]), [1.0, missing, 3.0])
     @test elscitype(SciTypes.coerce(SciTypes.Continuous, [1, missing, 3])) <: SciTypes.Continuous
     @test isequal(SciTypes.coerce(SciTypes.Categorical, [:a, missing, :c]), ["a", missing, "c"])

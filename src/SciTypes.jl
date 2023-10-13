@@ -93,7 +93,6 @@ scitype(::Type{<:AbstractChar}) = Categorical
 scitype(::Type{<:AbstractString}) = Categorical
 scitype(::Type{Union{T,Missing}}) where {T} = scitype(T)
 
-sciconvert(::Type{<:SciType}, ::Missing) = missing
 sciconvert(::Type{Continuous}, x::Integer) = float(x)
 sciconvert(::Type{Categorical}, x::Symbol) = string(x)
 sciconvert(::Type{Categorical}, x::Number) = convert(Int, x)
@@ -108,7 +107,7 @@ sciconvert(::Type{Categorical}, x::Integer) = x
 
 Convert the scientific type of elements of the iterable `itr` to `S`.
 """
-coerce(::Type{S}, itr) where {S<:SciType} = map(x -> sciconvert(S, x), itr)
+coerce(::Type{S}, itr) where {S<:SciType} = map(x -> ismissing(x) ? missing : sciconvert(S, x), itr)
 
 """
     isordered(itr)
