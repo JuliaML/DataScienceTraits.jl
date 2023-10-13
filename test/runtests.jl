@@ -71,6 +71,8 @@ using Test
     end
 
     # fallback: Unknown
+    @test SciTypes.sciconvert(SciTypes.Unknown, :a) === :a
+    @test scitype(SciTypes.sciconvert(SciTypes.Unknown, :a)) <: SciTypes.Unknown
     @test SciTypes.sciconvert(SciTypes.Unknown, nothing) === nothing
     @test scitype(SciTypes.sciconvert(SciTypes.Unknown, nothing)) <: SciTypes.Unknown
 
