@@ -88,7 +88,6 @@ scitype(::Type) = Unknown
 scitype(::Type{Union{}}) = Unknown
 scitype(::Type{Missing}) = Unknown
 scitype(::Type{<:Number}) = Continuous
-scitype(::Type{Symbol}) = Categorical
 scitype(::Type{<:Integer}) = Categorical
 scitype(::Type{<:AbstractChar}) = Categorical
 scitype(::Type{<:AbstractString}) = Categorical

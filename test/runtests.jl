@@ -18,11 +18,9 @@ using Test
     @test scitype(1.0 + 2im) <: SciTypes.Continuous
 
     # Categorical
-    @test scitype(Symbol) <: SciTypes.Categorical
     @test scitype(Int) <: SciTypes.Categorical
     @test scitype(Char) <: SciTypes.Categorical
     @test scitype(String) <: SciTypes.Categorical
-    @test scitype(:a) <: SciTypes.Categorical
     @test scitype(1) <: SciTypes.Categorical
     @test scitype('a') <: SciTypes.Categorical
     @test scitype("a") <: SciTypes.Categorical
@@ -45,11 +43,9 @@ using Test
     @test elscitype([1.0, 2.0, 3.0] .+ 2im) <: SciTypes.Continuous
 
     # Categorical
-    @test elscitype(Vector{Symbol}) <: SciTypes.Categorical
     @test elscitype(Vector{Int}) <: SciTypes.Categorical
     @test elscitype(NTuple{3,Char}) <: SciTypes.Categorical
     @test elscitype(NTuple{3,String}) <: SciTypes.Categorical
-    @test elscitype((:a, :b, :c)) <: SciTypes.Categorical
     @test elscitype((1, 2, 3)) <: SciTypes.Categorical
     @test elscitype('a':'c') <: SciTypes.Categorical
     @test elscitype(["a", "b", "c"]) <: SciTypes.Categorical
@@ -69,7 +65,7 @@ using Test
     end
 
     # fallback: Categorical
-    for x in (:a, 1, 'a', "a")
+    for x in (1, 'a', "a")
       @test SciTypes.sciconvert(SciTypes.Categorical, x) === x
       @test scitype(SciTypes.sciconvert(SciTypes.Categorical, x)) <: SciTypes.Categorical
     end
@@ -95,7 +91,6 @@ using Test
 
   @testset "isordered" begin
     @test !SciTypes.isordered([1, 2, 3])
-    @test !SciTypes.isordered((:a, :b, :c))
     @test !SciTypes.isordered(['a', 'b', 'c'])
     @test !SciTypes.isordered(("a", "b", "c"))
 
