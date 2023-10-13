@@ -78,6 +78,10 @@ using Test
     @test SciTypes.sciconvert(SciTypes.Continuous, 1) === 1.0
     @test scitype(SciTypes.sciconvert(SciTypes.Continuous, 1)) <: SciTypes.Continuous
 
+    # Symbol to Categorical
+    @test SciTypes.sciconvert(SciTypes.Categorical, :a) === "a"
+    @test scitype(SciTypes.sciconvert(SciTypes.Categorical, :a)) <: SciTypes.Categorical
+
     # Number to Categorical
     @test SciTypes.sciconvert(SciTypes.Categorical, 1.0) === 1
     @test scitype(SciTypes.sciconvert(SciTypes.Categorical, 1.0)) <: SciTypes.Categorical
@@ -95,6 +99,10 @@ using Test
     @test elscitype(SciTypes.coerce(SciTypes.Continuous, [1, 2, 3])) <: SciTypes.Continuous
     @test SciTypes.coerce(SciTypes.Continuous, (1, 2, 3)) == (1.0, 2.0, 3.0)
     @test elscitype(SciTypes.coerce(SciTypes.Continuous, (1, 2, 3))) <: SciTypes.Continuous
+    @test SciTypes.coerce(SciTypes.Categorical, [:a, :b, :c]) == ["a", "b", "c"]
+    @test elscitype(SciTypes.coerce(SciTypes.Categorical, [:a, :b, :c])) <: SciTypes.Categorical
+    @test SciTypes.coerce(SciTypes.Categorical, (:a, :b, :c)) == ("a", "b", "c")
+    @test elscitype(SciTypes.coerce(SciTypes.Categorical, (:a, :b, :c))) <: SciTypes.Categorical
     @test SciTypes.coerce(SciTypes.Categorical, [1.0, 2.0, 3.0]) == [1, 2, 3]
     @test elscitype(SciTypes.coerce(SciTypes.Categorical, [1.0, 2.0, 3.0])) <: SciTypes.Categorical
     @test SciTypes.coerce(SciTypes.Categorical, (1.0, 2.0, 3.0)) == (1, 2, 3)
@@ -117,8 +125,13 @@ using Test
     @test elscitype(fill(missing, 3)) <: SciTypes.Unknown
     @test elscitype([1.0, missing, 3.0]) <: SciTypes.Continuous
     @test elscitype([1, missing, 3]) <: SciTypes.Categorical
+    for S in (SciTypes.Continuous, SciTypes.Categorical, SciTypes.Compositional, SciTypes.Unknown)
+      @test ismissing(SciTypes.sciconvert(S, missing))
+    end
     @test isequal(SciTypes.coerce(SciTypes.Continuous, [1, missing, 3]), [1.0, missing, 3.0])
     @test elscitype(SciTypes.coerce(SciTypes.Continuous, [1, missing, 3])) <: SciTypes.Continuous
+    @test isequal(SciTypes.coerce(SciTypes.Categorical, [:a, missing, :c]), ["a", missing, "c"])
+    @test elscitype(SciTypes.coerce(SciTypes.Categorical, [:a, missing, :c])) <: SciTypes.Categorical
     @test isequal(SciTypes.coerce(SciTypes.Categorical, [1.0, missing, 3.0]), [1, missing, 3])
     @test elscitype(SciTypes.coerce(SciTypes.Categorical, [1.0, missing, 3.0])) <: SciTypes.Categorical
   end

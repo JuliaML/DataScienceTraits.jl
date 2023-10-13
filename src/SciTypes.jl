@@ -95,6 +95,7 @@ scitype(::Type{Union{T,Missing}}) where {T} = scitype(T)
 
 sciconvert(::Type{<:SciType}, ::Missing) = missing
 sciconvert(::Type{Continuous}, x::Integer) = float(x)
+sciconvert(::Type{Categorical}, x::Symbol) = string(x)
 sciconvert(::Type{Categorical}, x::Number) = convert(Int, x)
 sciconvert(::Type{Categorical}, x::Integer) = x
 
