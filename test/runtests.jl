@@ -65,7 +65,7 @@ using Test
     end
 
     # fallback: Categorical
-    for x in (1, 'a', "a")
+    for x in ('a', "a")
       @test SciTypes.sciconvert(SciTypes.Categorical, x) === x
       @test scitype(SciTypes.sciconvert(SciTypes.Categorical, x)) <: SciTypes.Categorical
     end
@@ -74,9 +74,17 @@ using Test
     @test SciTypes.sciconvert(SciTypes.Unknown, nothing) === nothing
     @test scitype(SciTypes.sciconvert(SciTypes.Unknown, nothing)) <: SciTypes.Unknown
 
-    # interger to Continuous
-    @test SciTypes.sciconvert(SciTypes.Continuous, 1) == 1.0
+    # Interger to Continuous
+    @test SciTypes.sciconvert(SciTypes.Continuous, 1) === 1.0
     @test scitype(SciTypes.sciconvert(SciTypes.Continuous, 1)) <: SciTypes.Continuous
+
+    # Number to Categorical
+    @test SciTypes.sciconvert(SciTypes.Categorical, 1.0) === 1
+    @test scitype(SciTypes.sciconvert(SciTypes.Categorical, 1.0)) <: SciTypes.Categorical
+
+    # no conversion: Integer to Categorical
+    @test SciTypes.sciconvert(SciTypes.Categorical, Int32(1)) === Int32(1)
+    @test scitype(SciTypes.sciconvert(SciTypes.Categorical, Int32(1))) <: SciTypes.Categorical
 
     # throws
     @test_throws ArgumentError SciTypes.sciconvert(SciTypes.Continuous, nothing)
@@ -87,6 +95,10 @@ using Test
     @test elscitype(SciTypes.coerce(SciTypes.Continuous, [1, 2, 3])) <: SciTypes.Continuous
     @test SciTypes.coerce(SciTypes.Continuous, (1, 2, 3)) == (1.0, 2.0, 3.0)
     @test elscitype(SciTypes.coerce(SciTypes.Continuous, (1, 2, 3))) <: SciTypes.Continuous
+    @test SciTypes.coerce(SciTypes.Categorical, [1.0, 2.0, 3.0]) == [1, 2, 3]
+    @test elscitype(SciTypes.coerce(SciTypes.Categorical, [1.0, 2.0, 3.0])) <: SciTypes.Categorical
+    @test SciTypes.coerce(SciTypes.Categorical, (1.0, 2.0, 3.0)) == (1, 2, 3)
+    @test elscitype(SciTypes.coerce(SciTypes.Categorical, (1.0, 2.0, 3.0))) <: SciTypes.Categorical
   end
 
   @testset "isordered" begin
@@ -106,6 +118,9 @@ using Test
     @test elscitype([1.0, missing, 3.0]) <: SciTypes.Continuous
     @test elscitype([1, missing, 3]) <: SciTypes.Categorical
     @test isequal(SciTypes.coerce(SciTypes.Continuous, [1, missing, 3]), [1.0, missing, 3.0])
+    @test elscitype(SciTypes.coerce(SciTypes.Continuous, [1, missing, 3])) <: SciTypes.Continuous
+    @test isequal(SciTypes.coerce(SciTypes.Categorical, [1.0, missing, 3.0]), [1, missing, 3])
+    @test elscitype(SciTypes.coerce(SciTypes.Categorical, [1.0, missing, 3.0])) <: SciTypes.Categorical
   end
 
   @testset "CoDa" begin
@@ -134,12 +149,24 @@ using Test
     @test elscitype([1.0, 2.0, 3.0] * u) <: SciTypes.Continuous
     @test elscitype([1, missing, 3] * u) <: SciTypes.Categorical
     @test elscitype([1.0, missing, 3.0] * u) <: SciTypes.Continuous
-    @test SciTypes.sciconvert(SciTypes.Continuous, q1) == 1.0 * u
-    @test scitype(SciTypes.sciconvert(SciTypes.Continuous, q1)) <: SciTypes.Continuous
+    # Quantity{Interger} to Continuous
+    @test SciTypes.sciconvert(SciTypes.Continuous, 1 * u) === 1.0 * u
+    @test scitype(SciTypes.sciconvert(SciTypes.Continuous, 1 * u)) <: SciTypes.Continuous
+    # Quantity{Number} to Categorical
+    @test SciTypes.sciconvert(SciTypes.Categorical, 1.0 * u) === 1 * u
+    @test scitype(SciTypes.sciconvert(SciTypes.Categorical, 1.0 * u)) <: SciTypes.Categorical
+    # no conversion: Quantity{Interger} to Categorical
+    @test SciTypes.sciconvert(SciTypes.Categorical, Int32(1) * u) === Int32(1) * u
+    @test scitype(SciTypes.sciconvert(SciTypes.Categorical, Int32(1) * u)) <: SciTypes.Categorical
+    # coercion
     @test SciTypes.coerce(SciTypes.Continuous, [1, 2, 3] * u) == [1.0, 2.0, 3.0] * u
     @test elscitype(SciTypes.coerce(SciTypes.Continuous, [1, 2, 3] * u)) <: SciTypes.Continuous
     @test isequal(SciTypes.coerce(SciTypes.Continuous, [1, missing, 3] * u), [1.0, missing, 3.0] * u)
     @test elscitype(SciTypes.coerce(SciTypes.Continuous, [1, missing, 3] * u)) <: SciTypes.Continuous
+    @test SciTypes.coerce(SciTypes.Categorical, [1.0, 2.0, 3.0] * u) == [1, 2, 3] * u
+    @test elscitype(SciTypes.coerce(SciTypes.Categorical, [1.0, 2.0, 3.0] * u)) <: SciTypes.Categorical
+    @test isequal(SciTypes.coerce(SciTypes.Categorical, [1.0, missing, 3.0] * u), [1, missing, 3] * u)
+    @test elscitype(SciTypes.coerce(SciTypes.Categorical, [1.0, missing, 3.0] * u)) <: SciTypes.Categorical
   end
 
   @testset "DynamicQuantities" begin
@@ -159,12 +186,25 @@ using Test
     @test elscitype([1.0, 2.0, 3.0] .* uf) <: SciTypes.Continuous
     @test elscitype([1 * ui, missing, 3 * ui]) <: SciTypes.Categorical
     @test elscitype([1.0 * uf, missing, 3.0 * uf]) <: SciTypes.Continuous
-    @test SciTypes.sciconvert(SciTypes.Continuous, q1) == 1.0 * uf
-    @test scitype(SciTypes.sciconvert(SciTypes.Continuous, q1)) <: SciTypes.Continuous
+    # Quantity{Interger} to Continuous
+    @test SciTypes.sciconvert(SciTypes.Continuous, 1 * ui) === 1.0 * uf
+    @test scitype(SciTypes.sciconvert(SciTypes.Continuous, 1 * ui)) <: SciTypes.Continuous
+    # Quantity{Number} to Categorical
+    @test SciTypes.sciconvert(SciTypes.Categorical, 1.0 * uf) === 1 * ui
+    @test scitype(SciTypes.sciconvert(SciTypes.Categorical, 1.0 * uf)) <: SciTypes.Categorical
+    # no conversion: Quantity{Interger} to Categorical
+    q3 = DynamicQuantities.Quantity{Int32}(q1)
+    @test SciTypes.sciconvert(SciTypes.Categorical, q3) === q3
+    @test scitype(SciTypes.sciconvert(SciTypes.Categorical, q3)) <: SciTypes.Categorical
+    # coercion
     @test SciTypes.coerce(SciTypes.Continuous, [1, 2, 3] .* ui) == [1.0, 2.0, 3.0] .* uf
     @test elscitype(SciTypes.coerce(SciTypes.Continuous, [1, 2, 3] .* ui)) <: SciTypes.Continuous
     @test isequal(SciTypes.coerce(SciTypes.Continuous, [1 * ui, missing, 3 * ui]), [1.0 * uf, missing, 3.0 * uf])
     @test elscitype(SciTypes.coerce(SciTypes.Continuous, [1 * ui, missing, 3 * ui])) <: SciTypes.Continuous
+    @test SciTypes.coerce(SciTypes.Categorical, [1.0, 2.0, 3.0] .* uf) == [1, 2, 3] .* ui
+    @test elscitype(SciTypes.coerce(SciTypes.Categorical, [1.0, 2.0, 3.0] .* uf)) <: SciTypes.Categorical
+    @test isequal(SciTypes.coerce(SciTypes.Categorical, [1.0 * uf, missing, 3.0 * uf]), [1 * ui, missing, 3 * ui])
+    @test elscitype(SciTypes.coerce(SciTypes.Categorical, [1.0 * uf, missing, 3.0 * uf])) <: SciTypes.Categorical
   end
 
   @testset "CategoricalArrays" begin
