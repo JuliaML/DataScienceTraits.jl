@@ -105,7 +105,7 @@ sciconvert(::Type{Categorical}, x::Integer) = x
 """
     coerce(S::Type{<:SciType}, itr)
 
-Convert the scientific type of elements of the iterable `itr` to `S`.
+Convert the scientific type of elements of the iterable `itr` to `S`, ignoring missing values.
 """
 coerce(::Type{S}, itr) where {S<:SciType} = map(x -> ismissing(x) ? missing : sciconvert(S, x), itr)
 
