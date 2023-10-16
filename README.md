@@ -1,7 +1,7 @@
-# SciTypes.jl
+# DataScienceTraits.jl
 
-[![Build Status](https://github.com/JuliaML/SciTypes.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/JuliaML/SciTypes.jl/actions/workflows/CI.yml?query=branch%3Amain)
-[![Coverage](https://codecov.io/gh/JuliaML/SciTypes.jl/branch/main/graph/badge.svg)](https://codecov.io/gh/JuliaML/SciTypes.jl)
+[![Build Status](https://github.com/JuliaML/DataScienceTraits.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/JuliaML/DataScienceTraits.jl/actions/workflows/CI.yml?query=branch%3Amain)
+[![Coverage](https://codecov.io/gh/JuliaML/DataScienceTraits.jl/branch/main/graph/badge.svg)](https://codecov.io/gh/JuliaML/DataScienceTraits.jl)
 
 This package provides an alternative implementation to
 [ScientificTypes.jl](https://github.com/JuliaAI/ScientificTypes.jl)
@@ -15,10 +15,10 @@ that need to dispatch different algorithms depending on scientific
 types:
 
 ```julia
-import SciTypes
+import DataScienceTraits as DST
 
-reduction(::SciTypes.Continuous) = sum
-reduction(::SciTypes.Categorical) = first
+reduction(::DST.Continuous) = sum
+reduction(::DST.Categorical) = first
 ```
 
 Extensions are provided for third-party types such as CoDa.jl

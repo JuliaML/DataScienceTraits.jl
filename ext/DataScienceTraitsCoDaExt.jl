@@ -2,11 +2,11 @@
 # Licensed under the MIT License. See LICENSE in the project root.
 # -----------------------------------------------------------------
 
-module SciTypesCoDaExt
+module DataScienceTraitsCoDaExt
 
-using SciTypes
+using DataScienceTraits
 using CoDa
 
-SciTypes.scitype(::Type{<:Composition}) = SciTypes.Compositional
+DataScienceTraits.scitype(::Type{<:Composition}) = DataScienceTraits.Compositional
 
 end

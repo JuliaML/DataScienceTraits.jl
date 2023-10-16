@@ -1,4 +1,4 @@
-name = "SciTypes"
+name = "DataScienceTraits"
 uuid = "6cb2f572-2d2b-4ba6-bdb3-e710fa044d6c"
 authors = ["Elias Carvalho <eliascarvdev@gmail.com> and contributors"]
 version = "0.1.0"
@@ -10,10 +10,10 @@ DynamicQuantities = "06fc5a27-2a28-4c7c-a15d-362465fb6821"
 Unitful = "1986cc42-f94f-5a68-af5c-568840ba703d"
 
 [extensions]
-SciTypesCategoricalArraysExt = "CategoricalArrays"
-SciTypesCoDaExt = "CoDa"
-SciTypesDynamicQuantitiesExt = "DynamicQuantities"
-SciTypesUnitfulExt = "Unitful"
+DataScienceTraitsCategoricalArraysExt = "CategoricalArrays"
+DataScienceTraitsCoDaExt = "CoDa"
+DataScienceTraitsDynamicQuantitiesExt = "DynamicQuantities"
+DataScienceTraitsUnitfulExt = "Unitful"
 
 [compat]
 CategoricalArrays = "0.10"
