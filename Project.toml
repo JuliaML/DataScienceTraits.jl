@@ -17,7 +17,7 @@ DataScienceTraitsUnitfulExt = "Unitful"
 
 [compat]
 CategoricalArrays = "0.10"
-CoDa = "1.0"
+CoDa = "1.2"
 DynamicQuantities = "0.7"
 Unitful = "1.17"
 julia = "1.9"
