@@ -239,6 +239,11 @@ const DST = DataScienceTraits
     @test DST.isordered(carr)
   end
 
+  @testset "Distributions" begin
+    @test scitype(Normal()) <: DST.Distributional
+    @test scitype(Exponential()) <: DST.Distributional
+  end
+
   @testset "Meshes" begin
     @test scitype(rand(Point2)) <: DST.Geometrical
     @test scitype(rand(Triangle{2,Float64})) <: DST.Geometrical
