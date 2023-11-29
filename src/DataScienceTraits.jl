@@ -51,7 +51,7 @@ abstract type Geometrical <: SciType end
 """
     Temporal
 
-Scientific type of temporal data (e.g. Date, DateTime).
+Scientific type of temporal data (e.g. Date, Time, DateTime).
 """
 abstract type Temporal <: SciType end
 
