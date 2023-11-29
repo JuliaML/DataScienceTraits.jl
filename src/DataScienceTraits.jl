@@ -4,6 +4,8 @@
 
 module DataScienceTraits
 
+using Dates: TimeType
+
 """
     SciType
 
@@ -31,6 +33,27 @@ abstract type Categorical <: SciType end
 Scientific type of compositional data (See CoDa.jl).
 """
 abstract type Compositional <: SciType end
+
+"""
+    Distributional
+
+Scientific type of distributional data (See Distributions.jl)
+"""
+abstract type Distributional <: SciType end
+
+"""
+    Geometrical
+
+Scientific type of geometrical data (See Meshes.jl)
+"""
+abstract type Geometrical <: SciType end
+
+"""
+    Temporal
+
+Scientific type of temporal data (e.g. Date, Time, DateTime).
+"""
+abstract type Temporal <: SciType end
 
 """
     Unknown
@@ -91,6 +114,7 @@ scitype(::Type{<:Number}) = Continuous
 scitype(::Type{<:Integer}) = Categorical
 scitype(::Type{<:AbstractChar}) = Categorical
 scitype(::Type{<:AbstractString}) = Categorical
+scitype(::Type{<:TimeType}) = Temporal
 scitype(::Type{Union{T,Missing}}) where {T} = scitype(T)
 
 sciconvert(::Type{Continuous}, x::Integer) = float(x)

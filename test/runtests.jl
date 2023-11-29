@@ -1,8 +1,11 @@
 using DataScienceTraits
 using CategoricalArrays
+using Distributions
+using Meshes
+using CoDa
 import DynamicQuantities
 import Unitful
-using CoDa
+using Dates
 using Test
 
 const DST = DataScienceTraits
@@ -234,5 +237,32 @@ const DST = DataScienceTraits
     @test !DST.isordered(carr)
     carr = categorical([1, 3, 2], ordered=true)
     @test DST.isordered(carr)
+  end
+
+  @testset "Distributions" begin
+    @test scitype(Normal()) <: DST.Distributional
+    @test scitype(Exponential()) <: DST.Distributional
+    @test elscitype(fill(Normal(), 3)) <: DST.Distributional
+    @test elscitype(fill(Exponential(), 3)) <: DST.Distributional
+    @test elscitype([Normal(), missing, Normal()]) <: DST.Distributional
+    @test elscitype([Exponential(), missing, Exponential()]) <: DST.Distributional
+  end
+
+  @testset "Meshes" begin
+    @test scitype(rand(Point2)) <: DST.Geometrical
+    @test scitype(rand(Triangle{2,Float64})) <: DST.Geometrical
+    @test scitype(rand(Triangle{2,Float64})) <: DST.Geometrical
+    @test elscitype(rand(Point2, 3)) <: DST.Geometrical
+    @test elscitype(rand(Triangle{2,Float64}, 3)) <: DST.Geometrical
+    @test elscitype([Point(0, 0), missing, Point(1, 1)]) <: DST.Geometrical
+    @test elscitype([Triangle((0, 0), (1, 0), (1, 1)), missing, Point(1, 1)]) <: DST.Geometrical
+  end
+
+  @testset "Dates" begin
+    @test scitype(Date(2023, 1, 1)) <: DST.Temporal
+    @test scitype(Time(1, 0, 0)) <: DST.Temporal
+    @test scitype(DateTime(2023, 1, 1)) <: DST.Temporal
+    @test elscitype(fill(Date(2023, 1, 1), 3)) <: DST.Temporal
+    @test elscitype([Date(2023, 1, 1), missing, Time(1, 0, 0)]) <: DST.Temporal
   end
 end
