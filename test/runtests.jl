@@ -1,8 +1,11 @@
 using DataScienceTraits
 using CategoricalArrays
+using Distributions
+using Meshes
+using CoDa
 import DynamicQuantities
 import Unitful
-using CoDa
+using Dates
 using Test
 
 const DST = DataScienceTraits
@@ -234,5 +237,11 @@ const DST = DataScienceTraits
     @test !DST.isordered(carr)
     carr = categorical([1, 3, 2], ordered=true)
     @test DST.isordered(carr)
+  end
+
+  @testset "Meshes" begin
+    @test scitype(rand(Point2)) <: DST.Geometric
+    @test scitype(rand(Triangle{2,Float64})) <: DST.Geometric
+    @test scitype(rand(Triangle{2,Float64})) <: DST.Geometric
   end
 end

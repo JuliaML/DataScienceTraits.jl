@@ -33,6 +33,27 @@ Scientific type of compositional data (See CoDa.jl).
 abstract type Compositional <: SciType end
 
 """
+    Distributional
+
+Scientific type of distributional data (See Distributions.jl)
+"""
+abstract type Distributional <: SciType end
+
+"""
+    Geometric
+
+Scientific type of geometric data (See Meshes.jl)
+"""
+abstract type Geometric <: SciType end
+
+"""
+    Temporal
+
+Scientific type of temporal data (e.g. Date, DateTime).
+"""
+abstract type Temporal <: SciType end
+
+"""
     Unknown
 
 Scientific type used as a fallback in the `scitype` trait function.
