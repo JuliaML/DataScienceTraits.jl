@@ -252,11 +252,17 @@ const DST = DataScienceTraits
     @test scitype(rand(Point2)) <: DST.Geometrical
     @test scitype(rand(Triangle{2,Float64})) <: DST.Geometrical
     @test scitype(rand(Triangle{2,Float64})) <: DST.Geometrical
+    @test elscitype(rand(Point2, 3)) <: DST.Geometrical
+    @test elscitype(rand(Triangle{2,Float64}, 3)) <: DST.Geometrical
+    @test elscitype([Point(0, 0), missing, Point(1, 1)]) <: DST.Geometrical
+    @test elscitype([Triangle((0, 0), (1, 0), (1, 1)), missing, Point(1, 1)]) <: DST.Geometrical
   end
 
   @testset "Dates" begin
-    @test scitype(Date(2023,1,1)) <: DST.Temporal
-    @test scitype(Time(1,0,0)) <: DST.Temporal
-    @test scitype(DateTime(2023,1,1)) <: DST.Temporal
+    @test scitype(Date(2023, 1, 1)) <: DST.Temporal
+    @test scitype(Time(1, 0, 0)) <: DST.Temporal
+    @test scitype(DateTime(2023, 1, 1)) <: DST.Temporal
+    @test elscitype(fill(Date(2023, 1, 1), 3)) <: DST.Temporal
+    @test elscitype([Date(2023, 1, 1), missing, Time(1, 0, 0)]) <: DST.Temporal
   end
 end
