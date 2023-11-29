@@ -42,11 +42,11 @@ Scientific type of distributional data (See Distributions.jl)
 abstract type Distributional <: SciType end
 
 """
-    Geometric
+    Geometrical
 
-Scientific type of geometric data (See Meshes.jl)
+Scientific type of geometrical data (See Meshes.jl)
 """
-abstract type Geometric <: SciType end
+abstract type Geometrical <: SciType end
 
 """
     Temporal

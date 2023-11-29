@@ -7,6 +7,6 @@ module DataScienceTraitsMeshesExt
 using DataScienceTraits
 using Meshes: Geometry
 
-DataScienceTraits.scitype(::Type{<:Geometry}) = DataScienceTraits.Geometric
+DataScienceTraits.scitype(::Type{<:Geometry}) = DataScienceTraits.Geometrical
 
 end

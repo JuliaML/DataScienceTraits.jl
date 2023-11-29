@@ -240,8 +240,8 @@ const DST = DataScienceTraits
   end
 
   @testset "Meshes" begin
-    @test scitype(rand(Point2)) <: DST.Geometric
-    @test scitype(rand(Triangle{2,Float64})) <: DST.Geometric
-    @test scitype(rand(Triangle{2,Float64})) <: DST.Geometric
+    @test scitype(rand(Point2)) <: DST.Geometrical
+    @test scitype(rand(Triangle{2,Float64})) <: DST.Geometrical
+    @test scitype(rand(Triangle{2,Float64})) <: DST.Geometrical
   end
 end
