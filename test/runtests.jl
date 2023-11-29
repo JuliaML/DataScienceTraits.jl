@@ -249,4 +249,10 @@ const DST = DataScienceTraits
     @test scitype(rand(Triangle{2,Float64})) <: DST.Geometrical
     @test scitype(rand(Triangle{2,Float64})) <: DST.Geometrical
   end
+
+  @testset "Dates" begin
+    @test scitype(Date(2023,1,1)) <: DST.Temporal
+    @test scitype(Time(1,0,0)) <: DST.Temporal
+    @test scitype(DateTime(2023,1,1)) <: DST.Temporal
+  end
 end
