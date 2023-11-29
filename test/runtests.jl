@@ -242,6 +242,10 @@ const DST = DataScienceTraits
   @testset "Distributions" begin
     @test scitype(Normal()) <: DST.Distributional
     @test scitype(Exponential()) <: DST.Distributional
+    @test elscitype(fill(Normal(), 3)) <: DST.Distributional
+    @test elscitype(fill(Exponential(), 3)) <: DST.Distributional
+    @test elscitype([Normal(), missing, Normal()]) <: DST.Distributional
+    @test elscitype([Exponential(), missing, Exponential()]) <: DST.Distributional
   end
 
   @testset "Meshes" begin
