@@ -4,6 +4,8 @@
 
 module DataScienceTraits
 
+using Dates: TimeType
+
 """
     SciType
 
@@ -113,6 +115,7 @@ scitype(::Type{<:Integer}) = Categorical
 scitype(::Type{<:AbstractChar}) = Categorical
 scitype(::Type{<:AbstractString}) = Categorical
 scitype(::Type{Union{T,Missing}}) where {T} = scitype(T)
+scitype(::Type{<:TimeType}) = Temporal
 
 sciconvert(::Type{Continuous}, x::Integer) = float(x)
 sciconvert(::Type{Categorical}, x::Symbol) = string(x)
