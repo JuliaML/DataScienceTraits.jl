@@ -249,11 +249,11 @@ const DST = DataScienceTraits
   end
 
   @testset "Meshes" begin
-    @test scitype(rand(Point2)) <: DST.Geometrical
-    @test scitype(rand(Triangle{2,Float64})) <: DST.Geometrical
-    @test scitype(rand(Triangle{2,Float64})) <: DST.Geometrical
-    @test elscitype(rand(Point2, 3)) <: DST.Geometrical
-    @test elscitype(rand(Triangle{2,Float64}, 3)) <: DST.Geometrical
+    @test scitype(rand(Point{2})) <: DST.Geometrical
+    @test scitype(rand(Triangle{2})) <: DST.Geometrical
+    @test scitype(rand(Triangle{2})) <: DST.Geometrical
+    @test elscitype([rand(Point{2})]) <: DST.Geometrical
+    @test elscitype([rand(Triangle{2})]) <: DST.Geometrical
     @test elscitype([Point(0, 0), missing, Point(1, 1)]) <: DST.Geometrical
     @test elscitype([Triangle((0, 0), (1, 0), (1, 1)), missing, Point(1, 1)]) <: DST.Geometrical
   end
