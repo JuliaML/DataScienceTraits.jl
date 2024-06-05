@@ -34,6 +34,9 @@ const DST = DataScienceTraits
     @test scitype(Vector) <: DST.Tensorial
     @test scitype(Matrix) <: DST.Tensorial
     @test scitype(Array) <: DST.Tensorial
+    @test scitype(rand(2)) <: DST.Tensorial
+    @test scitype(rand(2, 2)) <: DST.Tensorial
+    @test scitype(rand(2, 2, 2)) <: DST.Tensorial
 
     # Unknown
     @test scitype(Nothing) <: DST.Unknown
