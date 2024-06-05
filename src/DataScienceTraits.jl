@@ -49,6 +49,13 @@ Scientific type of geometrical data (See Meshes.jl)
 abstract type Geometrical <: SciType end
 
 """
+    Tensorial
+
+Scientific type of tensorial data (e.g. Vector, Matrix)
+"""
+abstract type Tensorial <: SciType end
+
+"""
     Temporal
 
 Scientific type of temporal data (e.g. Date, Time, DateTime).
@@ -114,6 +121,7 @@ scitype(::Type{<:Number}) = Continuous
 scitype(::Type{<:Integer}) = Categorical
 scitype(::Type{<:AbstractChar}) = Categorical
 scitype(::Type{<:AbstractString}) = Categorical
+scitype(::Type{<:AbstractArray}) = Tensorial
 scitype(::Type{<:TimeType}) = Temporal
 scitype(::Type{Union{T,Missing}}) where {T} = scitype(T)
 
