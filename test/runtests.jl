@@ -30,6 +30,11 @@ const DST = DataScienceTraits
     @test scitype('a') <: DST.Categorical
     @test scitype("a") <: DST.Categorical
 
+    # Tensorial
+    @test scitype(Vector) <: DST.Tensorial
+    @test scitype(Matrix) <: DST.Tensorial
+    @test scitype(Array) <: DST.Tensorial
+
     # Unknown
     @test scitype(Nothing) <: DST.Unknown
     @test scitype(Union{}) <: DST.Unknown
