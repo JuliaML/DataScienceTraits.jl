@@ -1,7 +1,7 @@
 name = "DataScienceTraits"
 uuid = "6cb2f572-2d2b-4ba6-bdb3-e710fa044d6c"
 authors = ["Elias Carvalho <eliascarvdev@gmail.com> and contributors"]
-version = "0.3.2"
+version = "0.3.3"
 
 [deps]
 Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
@@ -28,6 +28,6 @@ CoDa = "1.2"
 Dates = "1.9"
 Distributions = "0.25"
 DynamicQuantities = "0.7 - 0.14"
-Meshes = "0.42 - 0.45"
+Meshes = "0.42 - 0.46"
 Unitful = "1.17"
 julia = "1.9"
