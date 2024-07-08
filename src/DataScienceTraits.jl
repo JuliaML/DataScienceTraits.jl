@@ -157,6 +157,19 @@ end
 # EXPORTS
 #---------
 
-export scitype, elscitype
+export
+  # functions
+  scitype,
+  elscitype,
+
+  # types
+  Continuous,
+  Categorical,
+  Compositional,
+  Distributional,
+  Geometrical,
+  Tensorial,
+  Temporal,
+  Unknown
 
 end
