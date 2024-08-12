@@ -28,23 +28,30 @@ Scientific type of categorical (a.k.a. discrete) variables.
 abstract type Categorical <: SciType end
 
 """
+    Colorful
+
+Scientific type of colorful data (see Colors.jl).
+"""
+abstract type Colorful <: SciType end
+
+"""
     Compositional
 
-Scientific type of compositional data (See CoDa.jl).
+Scientific type of compositional data (see CoDa.jl).
 """
 abstract type Compositional <: SciType end
 
 """
     Distributional
 
-Scientific type of distributional data (See Distributions.jl)
+Scientific type of distributional data (see Distributions.jl)
 """
 abstract type Distributional <: SciType end
 
 """
     Geometrical
 
-Scientific type of geometrical data (See Meshes.jl)
+Scientific type of geometrical data (see Meshes.jl)
 """
 abstract type Geometrical <: SciType end
 
