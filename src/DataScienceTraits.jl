@@ -172,6 +172,7 @@ export
   # types
   Continuous,
   Categorical,
+  Colorful,
   Compositional,
   Distributional,
   Geometrical,
