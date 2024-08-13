@@ -244,9 +244,9 @@ const DST = DataScienceTraits
     c1 = Gray(0)
     c2 = RGB(0,0,0)
     @test scitype(Gray) <: DST.Colorful
-    @test scitype(c1) |<: DST.Colorful
+    @test scitype(c1) <: DST.Colorful
     @test scitype(RGB) <: DST.Colorful
-    @test scitype(c2) |<: DST.Colorful
+    @test scitype(c2) <: DST.Colorful
     @test elscitype(Vector{<:Colorant}) <: DST.Colorful
     @test elscitype([c1, c2]) <: DST.Colorful
     @test elscitype([c1, missing, c2]) <: DST.Colorful
