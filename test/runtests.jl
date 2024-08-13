@@ -1,12 +1,15 @@
 using DataScienceTraits
 using CategoricalArrays
+using ColorTypes
+using CoDa
 using Distributions
 using Meshes
-using CoDa
-import DynamicQuantities
-import Unitful
 using Dates
 using Test
+
+# import to avoid conflicts
+import DynamicQuantities
+import Unitful
 
 const DST = DataScienceTraits
 
@@ -148,16 +151,6 @@ const DST = DataScienceTraits
     @test elscitype(DST.coerce(DST.Categorical, [1.0, missing, 3.0])) <: DST.Categorical
   end
 
-  @testset "CoDa" begin
-    c1 = Composition(a=0.2, b=0.8)
-    c2 = Composition(a=0.5, b=0.5)
-    @test scitype(Composition{2,(:a, :b)}) <: DST.Compositional
-    @test scitype(c1) <: DST.Compositional
-    @test elscitype(Vector{Composition{2,(:a, :b)}}) <: DST.Compositional
-    @test elscitype([c1, c2]) <: DST.Compositional
-    @test elscitype([c1, missing, c2]) <: DST.Compositional
-  end
-
   @testset "Unitful" begin
     u = Unitful.u"m"
     q1 = 1 * u
@@ -245,6 +238,28 @@ const DST = DataScienceTraits
     @test !DST.isordered(carr)
     carr = categorical([1, 3, 2], ordered=true)
     @test DST.isordered(carr)
+  end
+
+  @testset "Colors" begin
+    c1 = Gray(0)
+    c2 = RGB(0,0,0)
+    @test scitype(Gray) <: DST.Colorful
+    @test scitype(c1) <: DST.Colorful
+    @test scitype(RGB) <: DST.Colorful
+    @test scitype(c2) <: DST.Colorful
+    @test elscitype(Vector{Colorant}) <: DST.Colorful
+    @test elscitype([c1, c2]) <: DST.Colorful
+    @test elscitype([c1, missing, c2]) <: DST.Colorful
+  end
+
+  @testset "CoDa" begin
+    c1 = Composition(a=0.2, b=0.8)
+    c2 = Composition(a=0.5, b=0.5)
+    @test scitype(Composition{2,(:a, :b)}) <: DST.Compositional
+    @test scitype(c1) <: DST.Compositional
+    @test elscitype(Vector{Composition{2,(:a, :b)}}) <: DST.Compositional
+    @test elscitype([c1, c2]) <: DST.Compositional
+    @test elscitype([c1, missing, c2]) <: DST.Compositional
   end
 
   @testset "Distributions" begin
