@@ -15,10 +15,10 @@ that need to dispatch different algorithms depending on scientific
 types:
 
 ```julia
-import DataScienceTraits as DST
+using DataScienceTraits
 
-reduction(::DST.Continuous) = sum
-reduction(::DST.Categorical) = first
+reduction(::Continuous) = sum
+reduction(::Categorical) = first
 ```
 
 Extensions are provided for third-party types such as CoDa.jl
