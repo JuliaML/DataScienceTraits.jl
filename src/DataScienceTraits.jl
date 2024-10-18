@@ -148,18 +148,6 @@ Convert the scientific type of elements of the iterable `itr` to `S`, ignoring m
 """
 coerce(::Type{S}, itr) where {S<:SciType} = map(x -> ismissing(x) ? missing : sciconvert(S, x), itr)
 
-"""
-    isordered(itr)
-
-Checks whether the categorical variables of the iterable `itr` are ordered.
-"""
-function isordered(itr)
-  if !(elscitype(itr) <: Categorical)
-    throw(ArgumentError("iterable elements are not categorical"))
-  end
-  false
-end
-
 #---------
 # EXPORTS
 #---------

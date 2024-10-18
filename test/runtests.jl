@@ -127,15 +127,6 @@ const DST = DataScienceTraits
     @test elscitype(DST.coerce(DST.Categorical, (1.0, 2.0, 3.0))) <: DST.Categorical
   end
 
-  @testset "isordered" begin
-    @test !DST.isordered([1, 2, 3])
-    @test !DST.isordered(['a', 'b', 'c'])
-    @test !DST.isordered(("a", "b", "c"))
-
-    # throws
-    @test_throws ArgumentError DST.isordered([1.0, 2.0, 3.0])
-  end
-
   @testset "missing values" begin
     @test scitype(Missing) <: DST.Unknown
     @test scitype(Union{Float64,Missing}) <: DST.Continuous
@@ -235,9 +226,6 @@ const DST = DataScienceTraits
     @test elscitype(CA) <: DST.Categorical
     @test elscitype(carr) <: DST.Categorical
     @test elscitype(categorical([1, missing, 3])) <: DST.Categorical
-    @test !DST.isordered(carr)
-    carr = categorical([1, 3, 2], ordered=true)
-    @test DST.isordered(carr)
   end
 
   @testset "Colors" begin
