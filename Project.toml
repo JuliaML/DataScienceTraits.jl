@@ -27,7 +27,7 @@ DataScienceTraitsUnitfulExt = "Unitful"
 [compat]
 CategoricalArrays = "0.10"
 CoDa = "1.2"
-ColorTypes = "0.11"
+ColorTypes = "0.11, 0.12"
 Dates = "1.9"
 Distributions = "0.25"
 DynamicQuantities = "1.0"
